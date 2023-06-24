@@ -9,4 +9,4 @@ https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-dis
 CONCLUSION
 Accuracy is unreliable for imbalanced classes. Precision and recall are more informative metrics. Precision measures the proportion of true positives among the objects classified as positive, while recall measures the proportion of positive objects correctly identified by the algorithm. F1-score balances precision and recall. Precision prevents classifying all objects into one class, reducing false positives. Recall reflects the algorithm's ability to detect the positive class, while precision indicates its ability to distinguish it from other classes.
 At the end of the project, there is a horizontal bar chart to look feature importance according to random forest model. 
-The HTML file displays all the codes and charts and is visible when the user downloads it.
+*******The HTML file displays all the codes and charts and is visible when the user downloads it.*******
