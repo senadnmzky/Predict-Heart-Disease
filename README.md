@@ -1,4 +1,4 @@
-# PredictHearthDisease
+# PredictHeartDisease
 Personal Key Indicators of Heart Disease from Kaggle
 
 According to the CDC, heart disease is one of the leading causes of death for people of most races in the US.
