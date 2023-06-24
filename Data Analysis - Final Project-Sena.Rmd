@@ -1,0 +1,892 @@
+---
+title: "Data Analysis - Final Project-Sena"
+author: "SenaKaya"
+date: "2023-06-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+```
+
+#read the dataset
+#first 5 row
+
+```{r }
+library(readxl)
+heartd<- read.csv("/Users/senakaya/Desktop/UCSC/data analysis/final-Personal Key Indicators of Heart Disease/heart_2020_cleaned.csv")
+head(heartd)
+```
+
+#dimension of dataset
+
+```{r }
+dim(heartd)
+```
+#to checks number of null values
+```{r}
+sum(heartd.stringsAsFactors=FALSE)
+sum(is.na(heartd))
+```
+#a list of objects and their structure
+```{r}
+str(heartd)
+```
+
+#summary of the dataset
+```{r}
+summary(heartd)
+```
+#table of HeartDisease
+```{r}
+table(heartd$HeartDisease)
+```
+
+#the number of different values for each column
+```{r}
+library(dplyr)
+heartd %>% summarise_all(n_distinct)
+```
+#EDA (EXPLORATORY DATA ANALYSIS)
+#histogram of BMI(Body Mass Index)
+```{r}
+library(ggplot2)
+
+p<-ggplot(data = heartd, aes(x = BMI)) + geom_histogram(binwidth = 3,fill='blue',colour="red")+ coord_cartesian(xlim = c(10, 60))
+p+ geom_vline(aes(xintercept=mean(BMI)), color="yellow", linetype="dashed", linewidth=1)
+```
+
+#histogram of Physical Health
+```{r}
+p<-ggplot(data = heartd, aes(x = heartd$PhysicalHealth)) + geom_histogram(binwidth = 3,fill='blue',colour="red")+ coord_cartesian(xlim = c(0, 30))
+p+ geom_vline(aes(xintercept=mean(heartd$PhysicalHealth)), color="yellow", linetype="dashed", size=1)
+```
+
+#histogram of Mental Health
+```{r}
+p<-ggplot(data = heartd, aes(x = MentalHealth )) + geom_histogram(binwidth = 3,fill='blue',colour="red")+ coord_cartesian(xlim = c(0, 30))
+p+ geom_vline(aes(xintercept=mean(MentalHealth)), color="yellow", linetype="dashed", size=1)
+```
+
+#histogram of Sleep Time
+```{r}
+p<-ggplot(data = heartd, aes(x = SleepTime)) + geom_histogram(binwidth = 1,fill='blue',colour="red")+ coord_cartesian(xlim = c(2, 12))
+p+ geom_vline(aes(xintercept=mean(SleepTime)), color="yellow", linetype="dashed", size=1)
+```
+
+#remove the scientific notations from the axis
+```{r}
+options(scipen = 999)
+```
+
+#Create the stacked bar plot for two categorical variable heart disease and smoking
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = Smoking)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))
+  ggtitle("Bar Plot of Heart Disease and Smoking")
+```
+
+#Create the stacked bar plot for two categorical variable heart disease and alcohol drinking
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = AlcoholDrinking)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))+
+  ggtitle("Bar Plot of Heart Disease and Alcohol Drinking")
+```
+
+#Create the bar stacked plot for two categorical variable heart disease and sex
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = Sex)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))+
+  ggtitle("Bar Plot of Heart Disease and Sex")
+```
+
+#Create the stacked bar plot for two categorical variable heart disease and asthma
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = Asthma)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))+
+  ggtitle("Bar Plot of Heart Disease and Asthma")
+```
+
+#Create the stacked bar plot for two categorical variable heart disease and kidney disease
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = KidneyDisease)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))+
+  ggtitle("Bar Plot of Heart Disease and Kidney Disease")
+```
+
+#Create the stacked bar plot for two categorical variable heart disease and skin cancer
+```{r}
+ggplot(heartd, aes(x = HeartDisease, fill = SkinCancer)) +
+  geom_bar() +
+  xlab("HeartDisease") +
+  ylab("Count") +
+  coord_cartesian(ylim = c(0, 300000))+
+  ggtitle("Bar Plot of Heart Disease and Skin Cancer")
+```
+
+#Count the frequencies of each combination of the two variables
+#Create the bar chart
+```{r}
+counts <- table(heartd$HeartDisease, heartd$Smoking)
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count",
+        main = "Bar Chart of Heart Disease and Smoking")
+```
+
+#Count the frequencies of each combination of the two variables
+#Define colors for the bars
+#Create the bar chart
+```{r}
+counts <- table(heartd$HeartDisease, heartd$AgeCategory)
+
+colors <- c("yellow", "green")  
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count",
+        main = "Bar Chart of Heart Disease and Age Category", col = colors)
+```
+
+#Count the frequencies of each combination of the two variables
+
+```{r}
+counts <- table(heartd$HeartDisease, heartd$Race)
+
+colors <- c("yellow", "green")  
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count",
+        main = "Bar Chart of HeartDisease and Race", col = colors)
+```
+
+#Count the frequencies of each combination of the two variables
+
+```{r}
+counts <- table(heartd$HeartDisease, heartd$GenHealth)
+
+colors <- c("yellow", "green")  
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count",
+        main = "Bar Chart of HeartDisease and GenHealth", col = colors)
+```
+
+# Count the frequencies of each combination of the two variables
+
+```{r}
+counts <- table(heartd$HeartDisease, heartd$SleepTime)
+
+colors <- c("yellow", "green")  
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count", 
+        main = "Bar Chart of HeartDisease and Sleep Time", col = colors)
+```
+
+# Count the frequencies of each combination of the two variables
+
+```{r}
+counts <- table(heartd$HeartDisease, heartd$PhysicalHealth)
+
+colors <- c("yellow", "green")  
+
+barplot(counts, beside = TRUE, legend = TRUE,
+        xlab = "HeartDisease", ylab = "Count", 
+        main = "Bar Chart of HeartDisease and Physical Health", col = colors)
+```
+
+# Replace values in the data frame
+```{r}
+heartd <- replace(heartd, heartd == 'Yes', 1)
+heartd <- replace(heartd, heartd == 'No', 0)
+heartd <- replace(heartd, heartd == 'Male', 1)
+heartd <- replace(heartd, heartd == 'Female', 0)
+heartd <- replace(heartd, heartd == 'No, borderline diabetes', 0)
+heartd <- replace(heartd, heartd == 'Yes (during pregnancy)', 1)
+#ordinal
+heartd <- replace(heartd, heartd == 'Excellent', 5)
+heartd <- replace(heartd, heartd == 'Very good', 4)
+heartd <- replace(heartd, heartd == 'Good', 3)
+heartd <- replace(heartd, heartd == 'Fair', 2)
+heartd <- replace(heartd, heartd == 'Poor', 1)
+```
+
+# Convert 'Diabetic' column to integer
+```{r}
+heartd$Diabetic <- as.numeric(heartd$Diabetic)
+```
+
+# Extract the first two characters from the "Age" column
+```{r}
+heartd$AgeCategory <- substr(heartd$AgeCategory, 1, 2)
+```
+
+# Print the first five row of modified "Age" column
+```{r}
+print(heartd$AgeCategory[1:5])
+```
+
+#convert all "0"s and "1"s to integer except c( "Race")
+```{r}
+num_columns <- setdiff(colnames(heartd), c( "Race"))
+
+heartd_num <- as.data.frame(lapply(heartd[num_columns], as.numeric))
+
+str(heartd_num)
+```
+```{r}
+library(reshape2)
+library(RColorBrewer)
+library(corrplot)
+
+library(ggcorrplot)
+```
+
+#Create correlation matrix
+#Plot correlation matrix
+#Calculate the correlation matrix
+```{r}
+cor_matrix <- cor(heartd_num)
+
+ggcorrplot(cor_matrix, type = "lower") +
+  geom_tile() +
+  scale_fill_gradientn(colours = brewer.pal(11, "RdBu"),
+                       limits = c(-1, 1),
+                       breaks = seq(-1, 1, by = 0.2)) +
+  
+  labs(x = "", y = "") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+
+cor_matrix <- cor(heartd_num)
+
+print(cor_matrix)
+```
+
+
+#Find correlations above 0.75
+#Check if there are any high correlations
+```{r}
+high_corr <- which(cor_matrix > 0.75 & cor_matrix < 1, arr.ind = TRUE)
+
+if (nrow(high_corr) == 0) {
+  cat("No correlations above 0.75 found.\n")
+} else {
+  # Print the pairs of variables with high correlation
+  for (i in 1:nrow(high_corr)) {
+    row_num <- high_corr[i, "row"]
+    col_num <- high_corr[i, "col"]
+    row_name <- rownames(cor_matrix)[row_num]
+    col_name <- colnames(cor_matrix)[col_num]
+    correlation <- cor_matrix[row_num, col_num]
+    cat("High correlation (", correlation, ") between", row_name, "and", col_name, "\n")
+  }
+}
+
+```
+
+#Create a copy of the original data frame
+```{r}
+df_encoded <- heartd
+str(df_encoded)
+```
+
+
+#ONE-HOT ENCODING
+#Perform one-hot encoding for the "Race" column
+```{r}
+df_encoded <- heartd
+```
+
+#Extract the "Race" column
+```{r}
+race_column <- df_encoded$Race
+```
+
+#Perform one-hot encoding for the "Race" column
+```{r}
+encoded_cols <- model.matrix(~ 0 + factor(race_column))
+colnames(encoded_cols) <- paste("Race", colnames(encoded_cols), sep = "_")
+```
+
+#Add the encoded columns to the data set
+```{r}
+df_encoded <- cbind(df_encoded, encoded_cols)
+```
+
+#Remove the original "Race" column
+```{r}
+df_encoded <- df_encoded[, !names(df_encoded) %in% "Race"]
+```
+
+#Print the encoded data set
+```{r}
+print(head(df_encoded))
+str(df_encoded)
+```
+
+#Convert specific columns to integers (only independent variables - dependent variable must be a factor)
+```{r}
+columns_to_convert <- c("Smoking", "SkinCancer", "KidneyDisease", "Asthma", "GenHealth", 
+                        "AgeCategory","Stroke", "AlcoholDrinking","Sex", "DiffWalking", "PhysicalActivity")
+df_encoded[columns_to_convert] <- lapply(df_encoded[columns_to_convert], as.numeric)
+```
+
+#Identify numeric variables in the data frame
+```{r}
+numeric_vars <- sapply(df_encoded, is.numeric)
+
+str(df_encoded)
+```
+
+SCALING
+#Apply min-max scaling to the numerical variables
+```{r}
+scaled_data <- apply(df_encoded[, numeric_vars], 2, function(x) (x - min(x)) / (max(x) - min(x)))
+```
+
+#Print the scaled data
+```{r}
+print(head(scaled_data))
+```
+
+#Combine the scaled numeric variables with the non-numeric variables
+```{r}
+scaled_dataframe <- cbind(scaled_data, df_encoded[!numeric_vars])
+str(scaled_dataframe)
+```
+
+#Print the scaled data frame
+```{r}
+print(head(scaled_dataframe))
+max(scaled_dataframe$BMI)
+min(scaled_dataframe$BMI)
+```
+
+```{r}
+# install.packages("caret", dependencies = c("Depends", "Suggests"))
+```
+
+```{r}
+#install.packages('gower')
+```
+```{r}
+# install.packages('hardhat')
+```
+
+```{r}
+# install.packages('timechange')
+```
+
+```{r}
+# install.packages('ModelMetrics')
+```
+```{r}
+library(ggplot2)
+library(lattice)
+library(caret)
+```
+#SPLITING TEST AND TRAIN DATA SET
+
+#Set the random seed for reproducibility
+#Specify the proportion of data to be allocated for the test set
+#Create the train and test split
+```{r}
+set.seed(123)
+
+test_size <- 0.2
+
+split <- createDataPartition(scaled_dataframe$HeartDisease, p = test_size, list = FALSE)
+```
+
+#Create the train set
+#Create the test set
+```{r}
+ test_set<- scaled_dataframe[split, ]
+
+ train_set <- scaled_dataframe[-split, ]
+```
+
+#dimension of test and train set
+```{r}
+dim(test_set)
+dim(train_set)
+```
+
+MODELLING
+Logistic Regression
+
+#Create the formula for logistic regression
+```{r}
+formula <- as.formula( HeartDisease ~ .)
+```
+
+#Convert the "HeartDisease" column to factor in both train_set and test_set
+```{r}
+train_set$HeartDisease <- factor(train_set$HeartDisease)
+test_set$HeartDisease <- factor(test_set$HeartDisease)
+```
+
+#Train the logistic regression model
+```{r}
+weight = 0.8
+model <- glm(formula, data = train_set, 
+             family = "binomial",
+             weights = ifelse(train_set$HeartDisease == 1, weight, 1 - weight)
+             )
+
+```
+
+#Make predictions on the test set
+```{r}
+predictions <- predict(model, newdata = test_set, type = "response")
+```
+
+#Convert the predictions to binary values
+```{r}
+binary_predictions <- ifelse(predictions > 0.5, 1, 0)
+```
+
+#Calculate accuracy
+```{r}
+accuracy <- mean(binary_predictions == test_set$HeartDisease)
+cat("Accuracy:", accuracy, "\n")
+
+TP <- sum(binary_predictions == 1 & test_set$HeartDisease == 1)
+FN <- sum(binary_predictions == 0 & test_set$HeartDisease == 1)
+```
+
+#recall <- sensitivity(as.factor(test_set$HeartDisease), as.factor(predictions))
+```{r}
+recall <- TP / (TP + FN)
+cat("Recall:", recall, "\n")
+```
+
+#Calculate precision
+```{r}
+precision <- sum(binary_predictions == 1 & test_set$HeartDisease == 1) / sum(binary_predictions == 1)
+cat("Precision:", precision, "\n")
+```
+
+#Calculate F1 score
+```{r}
+f1_score <- 2 * (precision * recall) / (precision + recall)
+cat("F1 Score:", f1_score, "\n")
+```
+
+#Confusion Matrix
+```{r}
+confusionMatrix(data=as.factor(binary_predictions), reference = as.factor(test_set$HeartDisease))
+```
+
+KNN Classifier
+
+#Train the KNN classifier
+```{r}
+library(caret)
+k <- 5
+formula <- as.formula(HeartDisease ~ .)
+model <- train(formula, data = train_set, method = "knn", trControl = trainControl(method = "none"), tuneGrid = data.frame(k = k))
+```
+
+#Make predictions on the test an training set
+```{r}
+predictions <- predict(model, newdata = test_set)
+predictions_train <- predict(model, newdata = train_set)
+```
+
+#Calculate accuracy
+```{r}
+accuracy <- sum(predictions == test_set$HeartDisease) / length(test_set$HeartDisease)
+cat("Accuracy:", accuracy, "\n")
+accuracy_train <- sum(predictions_train == train_set$HeartDisease) / length(train_set$HeartDisease)
+cat("Accuracy_Train:", accuracy_train, "\n")
+```
+
+#Calculate true positives
+```{r}
+true_positives <- sum(predictions == 1 & test_set$HeartDisease == 1)
+print(true_positives)
+```
+
+#Calculate false positives
+```{r}
+false_positives <- sum(predictions == 1 & test_set$HeartDisease == 0)
+print(false_positives)
+```
+
+#Calculate false negatives
+```{r}
+false_negatives <- sum(predictions == 0 & test_set$HeartDisease == 1)
+print(false_negatives)
+```
+
+#Calculate recall
+```{r}
+recall <- true_positives / (true_positives + false_negatives)
+cat("Recall:", recall, "\n")
+```
+
+#Calculate precision
+```{r}
+precision <- true_positives / (true_positives + false_positives)
+cat("Precision:", precision, "\n")
+```
+
+#Calculate F1 score
+```{r}
+f1_score <- 2 * (precision * recall) / (precision + recall)
+cat("F1 Score:", f1_score, "\n")
+```
+
+#Confusion Matrix of the test set
+```{r}
+confusionMatrix(data=as.factor(predictions), reference = as.factor(test_set$HeartDisease))
+```
+
+#Confusion Matrix of the train set
+```{r}
+confusionMatrix(data=as.factor(predictions_train), reference = as.factor(train_set$HeartDisease))
+```
+
+#RANDOM FOREST
+```{r}
+library(randomForest)
+```
+
+#Get the current column names
+```{r}
+column_names <- names(train_set)
+column_names_test <- names(test_set)
+```
+
+#Replace "/" and " " with "_"
+```{r}
+new_column_names <- gsub("/", "_", column_names)
+new_column_names_test <- gsub("/", "_", column_names_test)
+
+new_column_names <- gsub(" ", "_", new_column_names)
+new_column_names_test <- gsub(" ", "_", new_column_names_test)
+```
+
+#Rename columns with similar issues
+```{r}
+new_column_names <- sub(".*\\)", "Race_", new_column_names)
+new_column_names_test <- sub(".*\\)", "Race_", new_column_names_test)
+```
+
+#Assign the new column names to the dataset
+```{r}
+names(train_set) <- new_column_names
+names(test_set) <- new_column_names_test
+
+```
+
+```{r}
+library(dplyr)
+```
+
+#Define the parameter grid for tuning
+```{r}
+ntree_vals <- c(25,30,35,40,45,50,100)
+mtry_vals <- c(sqrt(ncol(train_set)))
+nodesize_vals <- c(20)
+```
+
+#Initialize empty dataframe to store results
+```{r}
+results <- data.frame(ntree = integer(),
+                      mtry = numeric(),
+                      nodesize = integer(),
+                      class_weight = character(),
+                      accuracy = numeric(),
+                      recall = numeric(),
+                      precision = numeric(),
+                      f1_score = numeric(),
+                      stringsAsFactors = FALSE)
+```
+
+#Define the best metric value and class weights
+```{r}
+best_metric <- 0
+best_class_weights <- NULL
+best_ntree <- 0
+best_mtry <- 0
+best_nodesize <- 0
+```
+
+#Iterate over parameter combinations
+```{r}
+for (ntree in ntree_vals) {
+  for (mtry in mtry_vals) {
+    for (nodesize in nodesize_vals) {
+      # Iterate over class weight combinations
+      for (weight_1 in seq(0.3, 0.6, 0.4)) {
+        weight_0 <- 1 - weight_1
+        class_weights <- list(weight_0, weight_1)
+
+        # Train the Random Forest model with current parameter combination and class weight
+        model <- randomForest(HeartDisease ~ ., 
+                              data = train_set, 
+                              ntree = ntree,
+                              mtry = mtry,
+                              importance = TRUE,
+                              nodesize = nodesize,
+                              classwt = class_weights)
+        
+        # Make predictions on the test set
+        predictions <- predict(model, newdata = test_set)
+        
+        # Calculate metrics
+        TP <- sum(predictions == 1 & test_set$HeartDisease == 1)
+        FN <- sum(predictions == 0 & test_set$HeartDisease == 1)
+        
+        accuracy <- mean(predictions == test_set$HeartDisease)
+        recall <- TP / (TP + FN)
+        precision <- sum(predictions == 1 & test_set$HeartDisease == 1) / sum(predictions == 1)
+        f1_score <- 2 * (precision * recall) / (precision + recall)
+        
+        # Append results to dataframe
+        results <- results %>% 
+          add_row(ntree = ntree,
+                  mtry = mtry,
+                  nodesize = nodesize,
+                  class_weight = paste(class_weights, collapse = ":"),
+                  accuracy = accuracy,
+                  recall = recall,
+                  precision = precision,
+                  f1_score = f1_score)
+        # Check if the current class weight combination improves the best metric
+        if (f1_score > best_metric) {
+          best_metric <- f1_score
+          best_class_weights <- class_weights
+          best_ntree <- ntree
+          best_mtry <- mtry
+          best_nodesize <- nodesize
+        }
+      }
+    }
+  }
+}
+```
+
+#View the results
+```{r}
+print(results)
+cat('\n')
+```
+
+#Print the best class weights and metric value
+```{r}
+cat("Best Class Weights:", paste(best_class_weights, collapse = ":"), "\n")
+cat("best_ntree:", best_ntree, "\n")
+cat("best_mtry:", best_mtry, "\n")
+cat("best_nodesize:", best_nodesize, "\n")
+cat("Best F1 Score:", best_metric, "\n")
+```
+
+#BEST RANDOM FOREST MODEL
+```{r}
+model <- randomForest(HeartDisease ~ ., 
+                      data = train_set, 
+                      ntree = best_ntree,           # Number of trees in the forest
+                      mtry = best_mtry,             # Number of variables to consider at each split
+                      importance = TRUE,            # Calculate variable importance
+                      nodesize = best_nodesize,     # Minimum size of terminal nodes
+                      classwt = best_class_weights  # Assign class weights
+)
+```
+
+#Make predictions on the test set
+```{r}
+predictions <- predict(model, newdata = test_set)
+predictions_train <- predict(model, newdata = train_set)
+```
+
+#Calculate accuracy
+```{r}
+accuracy <- mean(predictions == test_set$HeartDisease)
+cat("Accuracy for test_set:", accuracy, "\n")
+
+accuracy_train <- mean(predictions_train == train_set$HeartDisease)
+cat("Accuracy Training:", accuracy_train, "\n")
+```
+
+#Recall
+```{r}
+TP <- sum(predictions == 1 & test_set$HeartDisease == 1)
+FN <- sum(predictions == 0 & test_set$HeartDisease == 1)
+recall <- TP / (TP + FN)
+cat("Recall:", recall, "\n")
+
+TP <- sum(predictions_train == 1 & train_set$HeartDisease == 1)
+FN <- sum(predictions_train == 0 & train_set$HeartDisease == 1)
+recall_train <- TP / (TP + FN)
+cat("Recall_Train:", recall_train, "\n")
+```
+
+#Calculate precision
+```{r}
+precision <- sum(predictions == 1 & test_set$HeartDisease == 1) / sum(predictions == 1)
+cat("Precision:", precision, "\n")
+
+precision_train <- sum(predictions_train == 1 & train_set$HeartDisease == 1) / sum(predictions_train == 1)
+cat("Precision_train:", precision_train, "\n")
+```
+
+#Calculate F1 score
+```{r}
+f1_score <- 2 * (precision * recall) / (precision + recall)
+cat("F1 Score:", f1_score, "\n")
+
+f1_score_train <- 2 * (precision_train * recall_train) / (precision_train + recall_train)
+cat("F1 Score Train:", f1_score_train, "\n")
+```
+
+#Confusion matrix for test set
+```{r}
+confusionMatrix(data=as.factor(predictions), reference = as.factor(test_set$HeartDisease))
+```
+
+#Confusion Matrix for train set
+```{r}
+confusionMatrix(data=as.factor(predictions_train), reference = as.factor(train_set$HeartDisease))
+```
+
+#Feature Importances
+```{r}
+library(caret)
+library(ggplot2)
+```
+
+#Calculate feature importances
+```{r}
+importances <- varImp(model)
+```
+
+#Sort the importances in descending order
+```{r}
+sorted_importances <- importances[order(importances$`0`, decreasing = TRUE), ]
+sorted_importances = subset(sorted_importances, select = -c(1) )
+```
+
+#Print feature importances
+```{r}
+print(sorted_importances)
+```
+
+#Create a dataframe for plotting
+```{r}
+importance_df <- data.frame(variable = row.names(sorted_importances),
+                            importance = sorted_importances)
+```
+
+#Plot the feature importances in a horizontal bar chart
+```{r}
+ggplot(importance_df, aes(y = reorder(variable, X1), x = X1)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  geom_text(aes(label = round(X1,1)), hjust = -0.1, size = 3, color = "black") +
+  labs(y = "Variable", x = "Importance") +
+  ggtitle("Feature Importances") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+```{r}
+library(caret)
+```
+
+#Define the range of weights to be tested
+```{r}
+weight_range <- seq(0.1, 1, by = 0.1)
+```
+
+#Initialize an empty dataframe to store results
+```{r}
+results_LR <- data.frame(weights = character(),
+                         accuracy = numeric(),
+                         recall = numeric(),
+                         precision = numeric(),
+                         f1_score = numeric(),
+                         stringsAsFactors = FALSE)
+```
+
+#Perform parameter tuning with different class weights
+```{r}
+model <- glm(HeartDisease ~ ., 
+             data = train_set, 
+             family = "binomial")
+class_weights <- 'Default'
+
+for (weight in weight_range) {
+  # Train the logistic regression model with class weights
+  
+  
+  # Make predictions on the test set
+  predictions <- predict(model, newdata = test_set, type = "response")
+  
+  # Convert predictions to factors
+  predictions <- as.factor(ifelse(predictions > 0.5, 1, 0))
+  
+  # Calculate evaluation metrics
+  TP <- sum(predictions == 1 & test_set$HeartDisease == 1)
+  FN <- sum(predictions == 0 & test_set$HeartDisease == 1)
+  
+  accuracy <- mean(predictions == test_set$HeartDisease)
+  #recall <- sensitivity(as.factor(test_set$HeartDisease), as.factor(predictions))
+  recall <- TP / (TP + FN)
+  precision <- sum(predictions == 1 & test_set$HeartDisease == 1) / sum(predictions == 1)
+  f1_score <- 2 * (precision * recall) / (precision + recall)
+  
+  # Append results to the dataframe
+  
+  results_LR <- rbind(results_LR, data.frame(weights = class_weights,
+                                             accuracy = accuracy,
+                                             recall = recall,
+                                             precision = precision,
+                                             f1_score = f1_score,
+                                             stringsAsFactors = FALSE))
+
+  class_weights <- paste(1 - weight, weight, sep = ":")
+  model <- glm(HeartDisease ~ ., 
+               data = train_set, 
+               family = "binomial",
+               weights = ifelse(train_set$HeartDisease == 1, weight, 1 - weight))
+}
+
+# Print the results
+print(results_LR)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
